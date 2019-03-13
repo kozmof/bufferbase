@@ -178,7 +178,7 @@ class Collection < T extends Core > extends Core {
 
     }
 
-    buffer_time = () => {
+    buffer = () => {
 
     }
 }
