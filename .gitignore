@@ -1,0 +1,4 @@
+*swp
+/frontend/dst
+/frontend/node_modules
+/frontend/src/components/*.js
