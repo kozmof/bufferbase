@@ -4,6 +4,7 @@ type ID = string;
 type Duration = number;
 type Difficulty = number;
 type Percentage = number;
+type DataType = "core" | "atom" | "molecule" | "beaker";
 
 type TimeStamp = Date;
 type UnixTimeStamp = number;
@@ -43,7 +44,7 @@ class MetaData {
     done_percentage: Percentage;
     done_counts: Counts;
 
-    constructor(public parent_id: ParentID = "") {
+    constructor(public parent_id: ParentID, public data_type : DataType) {
         this.time_stamp = {
             created: new Date()
         }
@@ -61,6 +62,7 @@ class MetaData {
             denominator: 0,
             numerator: 0
         };
+
     }
 }
 
@@ -71,9 +73,9 @@ interface Meta {
 class Core implements Meta {
     meta_data: MetaData;
 
-    constructor(init: Init) {
+    constructor(init: Init, parent_id: ParentID, data_type: DataType) {
         if (init.is_first) {
-            this.meta_data = new MetaData();
+            this.meta_data = new MetaData(parent_id, data_type);
         } else {
             this.load();
         }
@@ -126,8 +128,8 @@ class Core implements Meta {
 }
 
 class Collection < T extends Core > extends Core {
-    constructor(init: Init, public container: Array < T > = []) {
-        super(init);
+    constructor(init: Init, parent_id: ParentID, data_type: DataType, public container: Array < T > = []) {
+        super(init, parent_id, data_type);
     }
 
     fresh_rate = (): number => {
@@ -173,6 +175,9 @@ class Collection < T extends Core > extends Core {
         return counts
     }
 
+    add = (el: T) =>{ 
+        this.container.push(el)
+    } 
 
     duration = () => {
 
@@ -181,34 +186,38 @@ class Collection < T extends Core > extends Core {
     buffer = () => {
 
     }
+
 }
 
 class Atom extends Core {
-    constructor(init: Init, public todo: string = "", public attack: string = "", public difficulty: Difficulty = 0) {
-        super(init)
+    constructor(init: Init, parent_id: ParentID = "", public todo: string = "", public attack: string = "", public difficulty: Difficulty = 0) {
+        super(init, parent_id, "atom")
     }
 
 }
 
 class Molecule extends Collection < Atom > {
-    constructor(init: Init, public abstract_text: string = "", public attack: string = "") {
-        super(init);
+    constructor(init: Init, parent_id: ParentID = "", public abstract_text: string = "", public attack: string = "") {
+        super(init, parent_id, "molecule");
     }
 
 }
 
 class Beaker extends Collection < Molecule > {
-    constructor(init: Init, public title: string = "", public note: string = "") {
-        super(init);
+    constructor(init: Init, parent_id: ParentID = "", public title: string = "", public note: string = "") {
+        super(init, parent_id, "beaker");
     }
+
 }
 
 let a = new Atom({is_first:true, user_id: ""});
-console.log(a);
-
 let m = new Molecule({is_first:true, user_id: ""});
-console.log(m);
+
+m.add(a)
 
 let b = new Beaker({is_first:true, user_id: ""})
-console.log(b);
+
+b.add(m)
+
+console.log(b)
 
