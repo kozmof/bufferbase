@@ -136,7 +136,7 @@ class Core implements Meta {
 }
 
 class Collection < T extends Core > extends Core {
-    constructor(init: Init, parent_id: ParentID, data_type: DataType, private time_plan: TimePlan, public container: Array < T > = []) {
+    constructor(init: Init, parent_id: ParentID, data_type: DataType, private time_plan: TimePlan, private container: Array < T > = []) {
         super(init, parent_id, data_type);
         this.meta_data.duration.whole_time = this.time_plan.whole_time;
         this.meta_data.duration.left = this.time_plan.whole_time;
