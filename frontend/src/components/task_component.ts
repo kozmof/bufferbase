@@ -16,6 +16,11 @@ interface TimeStampData {
     finished ? : TimeStamp;
 }
 
+interface TimePlan {
+    readonly whole_time: Duration;
+    readonly buffer: Duration;
+}
+
 interface TimeDurationData {
     elapsed: Duration;
     whole_time ? : Duration;
@@ -131,8 +136,11 @@ class Core implements Meta {
 }
 
 class Collection < T extends Core > extends Core {
-    constructor(init: Init, parent_id: ParentID, data_type: DataType, public container: Array < T > = []) {
+    constructor(init: Init, parent_id: ParentID, data_type: DataType, private time_plan: TimePlan, public container: Array < T > = []) {
         super(init, parent_id, data_type);
+        this.meta_data.duration.whole_time = this.time_plan.whole_time;
+        this.meta_data.duration.left = this.time_plan.whole_time;
+        this.meta_data.duration.buffer = this.time_plan.buffer;
     }
 
     fresh_rate = (): number => {
@@ -213,15 +221,15 @@ class Atom extends Core {
 }
 
 class Molecule extends Collection < Atom > {
-    constructor(init: Init, parent_id: ParentID = "", public abstract_text: string = "", public attack: string = "") {
-        super(init, parent_id, "molecule");
+    constructor(init: Init, parent_id: ParentID = "", public abstract_text: string = "", public attack: string = "", time_plan: TimePlan) {
+        super(init, parent_id, "molecule", time_plan);
     }
 
 }
 
 class Beaker extends Collection < Molecule > {
-    constructor(init: Init, parent_id: ParentID = "", public title: string = "", public note: string = "") {
-        super(init, parent_id, "beaker");
+    constructor(init: Init, parent_id: ParentID = "", public title: string = "", public note: string = "", time_plan: TimePlan) {
+        super(init, parent_id, "beaker", time_plan);
     }
 
 }
@@ -229,19 +237,33 @@ class Beaker extends Collection < Molecule > {
 let a = new Atom({
     is_first: true,
     user_id: ""
-}, "atom_test");
+}, "atom_test_id");
 
 let m = new Molecule({
     is_first: true,
     user_id: ""
-}, "molecule_test");
+}, "molecule_test_id",
+    "test_abstract",
+    "test_attack",
+    {
+    whole_time: 60,
+    buffer: 30
+    }
+);
 
 m.add(a)
 
 let b = new Beaker({
     is_first: true,
     user_id: ""
-}, "beaker_test");
+}, "beaker_test_id",
+    "test_title",
+    "test_note",
+    {
+    whole_time: 60,
+    buffer: 30
+    }
+);
 
 b.add(m);
 
