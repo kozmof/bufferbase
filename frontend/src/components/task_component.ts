@@ -44,7 +44,7 @@ class MetaData {
     done_percentage: Percentage;
     done_counts: Counts;
 
-    constructor(public parent_id: ParentID, public data_type : DataType) {
+    constructor(public parent_id: ParentID, public data_type: DataType) {
         this.time_stamp = {
             created: new Date()
         }
@@ -72,10 +72,12 @@ interface Meta {
 
 class Core implements Meta {
     meta_data: MetaData;
+    id: ID;
 
     constructor(init: Init, parent_id: ParentID, data_type: DataType) {
         if (init.is_first) {
             this.meta_data = new MetaData(parent_id, data_type);
+            this.id = this.gen_id();
         } else {
             this.load();
         }
@@ -122,8 +124,8 @@ class Core implements Meta {
 
     }
 
-    gen_id = () => {
-
+    gen_id = (): ID => {
+        return "dummy"
     }
 }
 
@@ -175,9 +177,18 @@ class Collection < T extends Core > extends Core {
         return counts
     }
 
-    add = (el: T) =>{ 
+    add = (el: T) => {
         this.container.push(el)
-    } 
+    }
+
+    remove = (id: ID) => {
+        for (let n = 0; n < this.container.length; n++) {
+            if (this.container[n].id === id) {
+                this.container.splice(n, 1);
+                return 
+            }
+        }
+    }
 
     duration = () => {
 
@@ -210,14 +221,17 @@ class Beaker extends Collection < Molecule > {
 
 }
 
-let a = new Atom({is_first:true, user_id: ""});
-let m = new Molecule({is_first:true, user_id: ""});
+let a = new Atom({is_first: true, user_id: ""}, "atom_test");
+
+let m = new Molecule({is_first: true, user_id: ""}, "molecule_test");
 
 m.add(a)
 
-let b = new Beaker({is_first:true, user_id: ""})
+let b = new Beaker({is_first: true, user_id: ""}, "beaker_test");
 
-b.add(m)
+b.add(m);
 
-console.log(b)
+console.log(b);
 
+b.remove("dummy");
+console.log(b);
