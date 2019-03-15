@@ -18,6 +18,7 @@ interface TimeStampData {
 
 interface TimeDurationData {
     elapsed: Duration;
+    whole_time ? : Duration;
     left ? : Duration;
     buffer ? : Duration;
 }
@@ -185,17 +186,21 @@ class Collection < T extends Core > extends Core {
         for (let n = 0; n < this.container.length; n++) {
             if (this.container[n].id === id) {
                 this.container.splice(n, 1);
-                return 
+                return
             }
         }
     }
 
-    duration = () => {
-
+    left = () => {
+        let whole_time = this.meta_data.duration.whole_time
+        for (let el of this.container) {
+            whole_time -= el.meta_data.duration.elapsed;
+        }
+        this.meta_data.duration.left = whole_time;
     }
 
     buffer = () => {
-
+        this.meta_data.duration.buffer = this.meta_data.duration.buffer + this.meta_data.duration.left;
     }
 
 }
@@ -221,13 +226,22 @@ class Beaker extends Collection < Molecule > {
 
 }
 
-let a = new Atom({is_first: true, user_id: ""}, "atom_test");
+let a = new Atom({
+    is_first: true,
+    user_id: ""
+}, "atom_test");
 
-let m = new Molecule({is_first: true, user_id: ""}, "molecule_test");
+let m = new Molecule({
+    is_first: true,
+    user_id: ""
+}, "molecule_test");
 
 m.add(a)
 
-let b = new Beaker({is_first: true, user_id: ""}, "beaker_test");
+let b = new Beaker({
+    is_first: true,
+    user_id: ""
+}, "beaker_test");
 
 b.add(m);
 
