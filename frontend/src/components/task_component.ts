@@ -17,8 +17,8 @@ interface TimeStampData {
 }
 
 interface TimeDurationData {
-    consumed: Duration;
-    last ? : Duration;
+    elapsed: Duration;
+    left ? : Duration;
     buffer ? : Duration;
 }
 
@@ -50,7 +50,7 @@ class MetaData {
         }
 
         this.duration = {
-            consumed: 0
+            elapsed: 0
         }
 
         this.category = [];
@@ -91,7 +91,7 @@ class Core implements Meta {
         return new Date(t * 1000)
     }
 
-    consumed_time = (start: TimeStamp, pause: TimeStamp): Duration => {
+    elapsed_time = (start: TimeStamp, pause: TimeStamp): Duration => {
         return this.to_unix_time(pause) - this.to_unix_time(start)
     }
 
