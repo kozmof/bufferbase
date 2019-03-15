@@ -43,7 +43,10 @@ class MetaData {
     time_stamp: TimeStampData;
     duration: TimeDurationData;
     category: string[];
+            
+    touched: boolean;
     running: boolean;
+    paused: boolean;
     done: boolean;
 
     fresh_rate: number;
@@ -60,7 +63,9 @@ class MetaData {
         }
 
         this.category = [];
+        this.touched = false;
         this.running = false;
+        this.paused = false;
         this.done = false;
         this.fresh_rate = 0;
         this.done_percentage = 0;
