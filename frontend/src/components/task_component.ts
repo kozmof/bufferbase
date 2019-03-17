@@ -229,13 +229,14 @@ class Collection < T extends Core > extends Core {
                     target_data.push(el.meta_data.fresh_rate);
             }
 
-            if (target_data.length <= 1) {
-                return 0
-            } else {
-                const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
-                const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2, average) / (target_data.length - 1), 1 / 2);
-                return Math.round(deviation)
-            }
+        }
+
+        if (target_data.length <= 1) {
+            return 0
+        } else {
+            const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
+            const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2, average) / (target_data.length - 1), 1 / 2);
+            return Math.round(deviation)
         }
 
     }
