@@ -220,7 +220,7 @@ class Collection < T extends Core > extends Core {
     }
 
     deviation = (target: Target): number => {
-        let target_data: Array < number > = [0];
+        let target_data: Array < number > = [];
         for (let el of this.container) {
             switch (target) {
                 case "difficulty":
@@ -228,12 +228,11 @@ class Collection < T extends Core > extends Core {
                 case "fresh_rate":
                     target_data.push(el.meta_data.fresh_rate);
             }
-
             const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
             if (target_data.length <= 0) {
                 return 0
             } else {
-                const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2) / (target_data.length - 1), 1 / 2);
+                const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2, average) / (target_data.length - 1), 1 / 2);
                 return Math.round(deviation)
             }
         }
