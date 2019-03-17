@@ -5,6 +5,7 @@ type Duration = number;
 type Difficulty = number;
 type Percentage = number;
 type DataType = "core" | "atom" | "molecule" | "beaker";
+type Target = "difficulty" | "fresh_rate";
 
 type TimeStamp = Date;
 type UnixTimeStamp = number;
@@ -43,13 +44,14 @@ class MetaData {
     time_stamp: TimeStampData;
     duration: TimeDurationData;
     category: string[];
-            
+
     touched: boolean;
     running: boolean;
     paused: boolean;
     done: boolean;
 
     fresh_rate: number;
+    difficulty: number;
     done_percentage: Percentage;
     done_counts: Counts;
 
@@ -68,6 +70,7 @@ class MetaData {
         this.paused = false;
         this.done = false;
         this.fresh_rate = 0;
+        this.difficulty = 0;
         this.done_percentage = 0;
         this.done_counts = {
             denominator: 0,
@@ -216,10 +219,31 @@ class Collection < T extends Core > extends Core {
         this.meta_data.duration.buffer = this.meta_data.duration.buffer + this.meta_data.duration.left;
     }
 
+    deviation = (target: Target): number => {
+        let target_data: Array < number > = [0];
+        for (let el of this.container) {
+            switch (target) {
+                case "difficulty":
+                    target_data.push(el.meta_data.difficulty);
+                case "fresh_rate":
+                    target_data.push(el.meta_data.fresh_rate);
+            }
+
+            const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
+            if (target_data.length <= 0) {
+                return 0
+            } else {
+                const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2) / (target_data.length - 1), 1 / 2);
+                return Math.round(deviation)
+            }
+        }
+
+    }
+
 }
 
 class Atom extends Core {
-    constructor(init: Init, parent_id: ParentID = "", public todo: string = "", public attack: string = "", public difficulty: Difficulty = 0) {
+    constructor(init: Init, parent_id: ParentID = "", public todo: string = "", public attack: string = "") {
         super(init, parent_id, "atom")
     }
 
@@ -245,28 +269,26 @@ let a = new Atom({
 }, "atom_test_id");
 
 let m = new Molecule({
-    is_first: true,
-    user_id: ""
-}, "molecule_test_id",
+        is_first: true,
+        user_id: ""
+    }, "molecule_test_id",
     "test_abstract",
-    "test_attack",
-    {
-    whole_time: 60,
-    buffer: 30
+    "test_attack", {
+        whole_time: 60,
+        buffer: 30
     }
 );
 
 m.add(a)
 
 let b = new Beaker({
-    is_first: true,
-    user_id: ""
-}, "beaker_test_id",
+        is_first: true,
+        user_id: ""
+    }, "beaker_test_id",
     "test_title",
-    "test_note",
-    {
-    whole_time: 60,
-    buffer: 30
+    "test_note", {
+        whole_time: 60,
+        buffer: 30
     }
 );
 
