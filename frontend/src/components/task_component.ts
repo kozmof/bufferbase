@@ -51,7 +51,9 @@ class MetaData {
     done: boolean;
 
     fresh_rate: number;
+    fresh_rate_diff: number;
     difficulty: number;
+    difficulty_diff: number;
     done_percentage: Percentage;
     done_counts: Counts;
 
@@ -70,7 +72,9 @@ class MetaData {
         this.paused = false;
         this.done = false;
         this.fresh_rate = 0;
+        this.fresh_rate_diff = 0;
         this.difficulty = 0;
+        this.difficulty_diff = 0;
         this.done_percentage = 0;
         this.done_counts = {
             denominator: 0,
@@ -237,6 +241,20 @@ class Collection < T extends Core > extends Core {
             const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
             const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2, average) / (target_data.length - 1), 1 / 2);
             return Math.round(deviation)
+        }
+    }
+
+    diff = (target: Target) => {
+        const dev = this.deviation(target);
+        for (let el of this.container) {
+            switch (target) {
+                case "difficulty":
+                    el.meta_data.difficulty_diff = el.meta_data.difficulty - dev;
+
+                case "fresh_rate":
+                    el.meta_data.fresh_rate_diff = el.meta_data.fresh_rate - dev;
+
+            }
         }
 
     }
