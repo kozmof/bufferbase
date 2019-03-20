@@ -52,10 +52,7 @@ class MetaData {
     done: boolean;
 
     fresh_rate: number;
-    fresh_rate_diff: number;
     difficulty: number;
-    difficulty_diff: number;
-    difficulty_sd: number;
     done_percentage: Percentage;
     done_counts: Counts;
 
@@ -74,10 +71,7 @@ class MetaData {
         this.paused = false;
         this.done = false;
         this.fresh_rate = 0;
-        this.fresh_rate_diff = 0;
         this.difficulty = 0;
-        this.difficulty_diff = 0;
-        this.difficulty_sd = 0;
         this.done_percentage = 0;
         this.done_counts = {
             denominator: 0,
@@ -150,7 +144,7 @@ class Core implements Meta {
     }
 
     level = (): DifficultyLevel => {
-            return 1
+        return 1
     }
 }
 
@@ -230,30 +224,25 @@ class Collection < T extends Core > extends Core {
         this.meta_data.duration.buffer = this.meta_data.duration.buffer + this.meta_data.duration.left;
     }
 
-    deviation = (target: Target): number => {
+    deviation = (container: Array < T > , target: Target): number => {
         let target_data: Array < number > = [];
-        for (let el of this.container) {
+        for (let el of container) {
             switch (target) {
                 case "difficulty":
                     target_data.push(el.meta_data.difficulty);
                 case "fresh_rate":
                     target_data.push(el.meta_data.fresh_rate);
             }
-
         }
+
+
 
         if (target_data.length <= 1) {
             return 0
         } else {
             const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
             const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2, average) / (target_data.length - 1), 1 / 2);
-                if (target === "difficulty"){
-                        for(let el of this.container){
-                                el.meta_data.difficulty_sd = deviation;
-                                  
-                        } 
-                }
-                return deviation
+            return deviation
         }
     }
 
