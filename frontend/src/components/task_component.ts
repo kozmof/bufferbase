@@ -6,6 +6,7 @@ type Difficulty = number;
 type Percentage = number;
 type DataType = "core" | "atom" | "molecule" | "beaker";
 type Target = "difficulty" | "fresh_rate";
+type DifficultyLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 type TimeStamp = Date;
 type UnixTimeStamp = number;
@@ -54,6 +55,7 @@ class MetaData {
     fresh_rate_diff: number;
     difficulty: number;
     difficulty_diff: number;
+    difficulty_sd: number;
     done_percentage: Percentage;
     done_counts: Counts;
 
@@ -75,6 +77,7 @@ class MetaData {
         this.fresh_rate_diff = 0;
         this.difficulty = 0;
         this.difficulty_diff = 0;
+        this.difficulty_sd = 0;
         this.done_percentage = 0;
         this.done_counts = {
             denominator: 0,
@@ -144,6 +147,10 @@ class Core implements Meta {
 
     gen_id = (): ID => {
         return "dummy"
+    }
+
+    level = (): DifficultyLevel => {
+            return 1
     }
 }
 
@@ -240,23 +247,14 @@ class Collection < T extends Core > extends Core {
         } else {
             const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
             const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2, average) / (target_data.length - 1), 1 / 2);
-            return Math.round(deviation)
+                if (target === "difficulty"){
+                        for(let el of this.container){
+                                el.meta_data.difficulty_sd = deviation;
+                                  
+                        } 
+                }
+                return deviation
         }
-    }
-
-    diff = (target: Target) => {
-        const dev = this.deviation(target);
-        for (let el of this.container) {
-            switch (target) {
-                case "difficulty":
-                    el.meta_data.difficulty_diff = el.meta_data.difficulty - dev;
-
-                case "fresh_rate":
-                    el.meta_data.fresh_rate_diff = el.meta_data.fresh_rate - dev;
-
-            }
-        }
-
     }
 
 }
