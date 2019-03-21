@@ -17,7 +17,8 @@
 |done_counts       |S(0-1)  |CT        |CT        |
 |elapsed           |C       |C         |C         |
 |left              |X       |C         |C         |
-|buffer            |X       |C         |C         |
+|buffer            |X       |SC        |SC        |
+|whole_time        |X       |S         |S         |
 |difficulty        |S(0-10) |CT(0-10)  |CT(0-10)  |
 |level             |C(1-6)  |C(1-6)    |C(1-6)    |
 
