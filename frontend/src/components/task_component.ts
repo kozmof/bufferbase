@@ -154,7 +154,7 @@ class Core implements Meta {
         const ssd = this.signed_deviation(all_difficulty);
 
         if (debug) {
-            console.log(`singed standard deviation: ${ssd}`);
+            console.log(`signed standard deviation: ${ssd}`);
         }
 
         if (10 >= dif && dif > (25 + ssd) / 3) {
