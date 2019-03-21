@@ -148,10 +148,14 @@ class Core implements Meta {
         return [10, 10, 10, 10, 10, 10, 10]
     }
 
-    level = (dif: Difficulty): DifficultyLevel => {
+    level = (dif: Difficulty, debug: boolean = false): DifficultyLevel => {
         let all_difficulty = this.load_all_difficulty();
         all_difficulty.push(5);
         const ssd = this.signed_deviation(all_difficulty);
+
+        if (debug) {
+            console.log(`singed standard deviation: ${ssd}`);
+        }
 
         if (10 >= dif && dif > (25 + ssd) / 3) {
             return 6
@@ -298,7 +302,7 @@ let a = new Atom({
 }, "atom_test_id");
 
 console.log("level");
-console.log(a.level(5));
+console.log(a.level(5, true));
 
 let m = new Molecule({
         is_first: true,
