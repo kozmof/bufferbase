@@ -161,9 +161,9 @@ class Core implements Meta {
             return 4
         } else if (5 + ssd >= dif && dif > (5 + ssd) * 2 / 3) {
             return 3
-        } else if ((5 + ssd) * 2 / 3 >= dif && dif > (5 + ssd) * 1 / 3) {
+        } else if ((5 + ssd) * 2 / 3 >= dif && dif > (5 + ssd) / 3) {
             return 2
-        } else if ((5 + ssd) * 1 / 3 >= dif && dif >= 0) {
+        } else if ((5 + ssd) / 3 >= dif && dif >= 0) {
             return 1
         }
     }
@@ -182,7 +182,7 @@ class Core implements Meta {
                 acc += (el - average) ** 2;
             }
 
-            const deviation = (acc / (nums.length - 1)) ** 1 / 2;
+            const deviation = (acc / (nums.length - 1)) ** (1 / 2);
 
             if (acc_diff >= 0) {
                 return deviation
