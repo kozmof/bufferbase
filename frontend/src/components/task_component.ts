@@ -151,11 +151,11 @@ class Core implements Meta {
         all_difficulty.push(5);
         const ssd = this.signed_deviation(all_difficulty);
 
-        if (10 >= dif && dif > (5 - ssd) * 5 / 3) {
+        if (10 >= dif && dif > (25 + ssd) / 3) {
             return 6
-        } else if ((5 - ssd) * 5 / 3 >= dif && dif > (5 - ssd) * 4 / 3) {
+        } else if ((25 + ssd) / 3 >= dif && dif > (20 - (2 * ssd)) / 3) {
             return 5
-        } else if ((5 - ssd) * 4 / 3 >= dif && dif > 5 + ssd) {
+        } else if ((20 - (2 * ssd)) / 3 >= dif && dif > 5 + ssd) {
             return 4
         } else if (5 + ssd >= dif && dif > (5 + ssd) * 2 / 3) {
             return 3
