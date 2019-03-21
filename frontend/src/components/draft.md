@@ -2,7 +2,7 @@
 
 |                  |Atom    | Molecule | Beaker   |
 |------------------|--------|----------|----------|
-|is_first          |O       |O         |O         |
+|is_first          |C       |C         |C         |
 |user_id           |C       |C         |C         |
 |id                |C       |C         |C         |
 |created           |C       |C         |C         |
