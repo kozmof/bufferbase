@@ -2,10 +2,9 @@ type UserID = string;
 type ParentID = string;
 type ID = string;
 type Duration = number;
-type Difficulty = number;
+type Difficulty = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 0 | 10;
 type Percentage = number;
 type DataType = "core" | "atom" | "molecule" | "beaker";
-type Target = "difficulty" | "fresh_rate";
 type DifficultyLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 type TimeStamp = Date;
@@ -143,8 +142,52 @@ class Core implements Meta {
         return "dummy"
     }
 
-    level = (): DifficultyLevel => {
-        return 1
+    load_all_difficulty = (): Array < number > => {
+        return []
+    }
+
+    level = (dif: Difficulty): DifficultyLevel => {
+        let all_difficulty = this.load_all_difficulty();
+        all_difficulty.push(5);
+        const ssd = this.signed_deviation(all_difficulty);
+
+        if (10 >= dif && dif > (5 - ssd) * 5 / 3) {
+            return 6
+        } else if ((5 - ssd) * 5 / 3 >= dif && dif > (5 - ssd) * 4 / 3) {
+            return 5
+        } else if ((5 - ssd) * 4 / 3 >= dif && dif > 5 + ssd) {
+            return 4
+        } else if (5 + ssd >= dif && dif > (5 + ssd) * 2 / 3) {
+            return 3
+        } else if ((5 + ssd) * 2 / 3 >= dif && dif > (5 + ssd) * 1 / 3) {
+            return 2
+        } else if ((5 + ssd) * 1 / 3 >= dif && dif >= 0) {
+            return 1
+        }
+    }
+
+    signed_deviation = (nums: Array < number > ): number => {
+        if (nums.length <= 1) {
+            return 0
+        } else {
+            const average = nums.reduce((acc, el) => acc + el) / nums.length;
+
+            let acc = 0;
+            let acc_diff = 0;
+
+            for (let el of nums) {
+                acc_diff += el - average;
+                acc += (el - average) ** 2;
+            }
+
+            const deviation = (acc / (nums.length - 1)) ** 1 / 2;
+
+            if (acc_diff >= 0) {
+                return deviation
+            } else {
+                return -deviation
+            }
+        }
     }
 }
 
@@ -222,28 +265,6 @@ class Collection < T extends Core > extends Core {
 
     buffer = () => {
         this.meta_data.duration.buffer = this.meta_data.duration.buffer + this.meta_data.duration.left;
-    }
-
-    deviation = (container: Array < T > , target: Target): number => {
-        let target_data: Array < number > = [];
-        for (let el of container) {
-            switch (target) {
-                case "difficulty":
-                    target_data.push(el.meta_data.difficulty);
-                case "fresh_rate":
-                    target_data.push(el.meta_data.fresh_rate);
-            }
-        }
-
-
-
-        if (target_data.length <= 1) {
-            return 0
-        } else {
-            const average = target_data.reduce((acc, el) => acc + el) / target_data.length;
-            const deviation = Math.pow(target_data.reduce((acc, el) => acc + (el - average) ** 2, average) / (target_data.length - 1), 1 / 2);
-            return deviation
-        }
     }
 
 }
