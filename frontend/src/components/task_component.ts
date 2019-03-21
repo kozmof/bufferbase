@@ -34,6 +34,11 @@ interface Counts {
     denominator: number;
 }
 
+interface PlusMinus {
+    plus: number;
+    minus: number;
+}
+
 interface Init {
     readonly is_first: boolean;
     readonly user_id: UserID;
@@ -179,19 +184,29 @@ class Core implements Meta {
             const average = nums.reduce((acc, el) => acc + el) / nums.length;
 
             let acc = 0;
-            let acc_diff = 0;
+            let pm: PlusMinus = {
+                plus: 0,
+                minus: 0
+            };
 
             for (let el of nums) {
-                acc_diff += el - average;
+                if (el - average >= 0) {
+                    pm.plus += 1;
+                } else {
+                    pm.minus += 1;
+                }
+
                 acc += (el - average) ** 2;
             }
 
             const deviation = (acc / (nums.length - 1)) ** (1 / 2);
 
-            if (acc_diff >= 0) {
+            if (pm.plus > pm.minus) {
                 return deviation
-            } else {
+            } else if (pm.plus < pm.minus) {
                 return -deviation
+            } else {
+                return 0
             }
         }
     }
