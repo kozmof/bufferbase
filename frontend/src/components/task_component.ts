@@ -2,9 +2,9 @@ type UserID = string;
 type ParentID = string;
 type ID = string;
 type Duration = number;
-type Difficulty = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 0 | 10;
 type Percentage = number;
 type DataType = "core" | "atom" | "molecule" | "beaker";
+type Difficulty = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 type DifficultyLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 type TimeStamp = Date;
@@ -142,8 +142,10 @@ class Core implements Meta {
         return "dummy"
     }
 
+    // TODO
     load_all_difficulty = (): Array < number > => {
-        return []
+        // Dummy
+        return [10, 10, 10, 10, 10, 10, 10]
     }
 
     level = (dif: Difficulty): DifficultyLevel => {
@@ -294,6 +296,9 @@ let a = new Atom({
     is_first: true,
     user_id: ""
 }, "atom_test_id");
+
+console.log("level");
+console.log(a.level(5));
 
 let m = new Molecule({
         is_first: true,
