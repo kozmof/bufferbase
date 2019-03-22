@@ -27,13 +27,18 @@
 |title             |N       |N         |S         |
 |note              |N       |N         |S         |
 
-- S := set
-- N := none
-- C := caluculate
-- T := total 
+- S: set
+- N: none
+- C: caluculate
+- T: total 
 
-- (num) := range
+- (num): range
 
 ## Calcs
 ### signed_deviation
+Deviation with an information of which side(plus or minus) has more elements.
+### fresh_rate
+
+## Feature Drafts
+- Level shows an average of achieved time.
 
