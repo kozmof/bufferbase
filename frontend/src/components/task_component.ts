@@ -103,7 +103,7 @@ class Core implements Meta {
     }
 
     to_unix_time = (t: TimeStamp): UnixTimeStamp => {
-        return parseInt((t.getTime() / 1000).toFixed(0))
+        return Math.round(t.getTime() / 1000)
     }
 
     to_time = (t: UnixTimeStamp): TimeStamp => {
@@ -112,6 +112,18 @@ class Core implements Meta {
 
     elapsed_time = (start: TimeStamp, pause: TimeStamp): Duration => {
         return this.to_unix_time(pause) - this.to_unix_time(start)
+    }
+
+    stom = (seconds: UnixTimeStamp): number => {
+        return Math.round(seconds / 60)
+    }
+
+    mtoh = (minutes: number): number => {
+        return Math.round(minutes / 60)
+    }
+
+    htod = (hours: number): number => {
+        return Math.round(hours / 24)
     }
 
     start = () => {
@@ -150,7 +162,7 @@ class Core implements Meta {
     // TODO
     load_all_difficulty = (): Array < number > => {
         // Dummy
-        return [10, 10, 10, 10, 10, 10, 10]
+        return [0, 1, 1, 1, 1, 1, 1]
     }
 
     level = (dif: Difficulty, debug: boolean = false): DifficultyLevel => {
