@@ -10,7 +10,7 @@
 |finished          |S       |N         |N         |
 |paused            |S       |N         |N         |
 |category          |S       |S         |S         |
-|running           |O       |N         |N         |
+|running           |S       |N         |N         |
 |done              |S       |CT        |CT        |
 |fresh_rate        |C       |CT        |CT        |
 |done_percentage   |N       |CT        |CT        |
@@ -30,7 +30,7 @@
 - S := set
 - N := none
 - C := caluculate
-- T := Total 
+- T := total 
 
 - (num) := range
 
