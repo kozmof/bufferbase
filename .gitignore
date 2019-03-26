@@ -1,5 +1,6 @@
 *.swp
 *.swo
-/frontend/dst
-/frontend/node_modules
-/frontend/src/components/*.js
+/client/dst
+/client/node_modules
+/client/src/components/*.js
+/client/src/components/tmp.ts
