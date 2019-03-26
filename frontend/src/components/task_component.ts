@@ -302,62 +302,23 @@ class Collection < T extends Core > extends Core {
 
 }
 
-class Atom extends Core {
+export class Atom extends Core {
     constructor(init: Init, parent_id: ParentID = "", public todo: string = "", public attack: string = "") {
         super(init, parent_id, "atom")
     }
 
 }
 
-class Molecule extends Collection < Atom > {
+export class Molecule extends Collection < Atom > {
     constructor(init: Init, parent_id: ParentID = "", public abstract_text: string = "", public attack: string = "", time_plan: TimePlan) {
         super(init, parent_id, "molecule", time_plan);
     }
 
 }
 
-class Beaker extends Collection < Molecule > {
+export class Beaker extends Collection < Molecule > {
     constructor(init: Init, parent_id: ParentID = "", public title: string = "", public note: string = "", time_plan: TimePlan) {
         super(init, parent_id, "beaker", time_plan);
     }
 
 }
-
-let a = new Atom({
-    is_first: true,
-    user_id: ""
-}, "atom_test_id");
-
-console.log("level");
-console.log(a.level(5, true));
-
-let m = new Molecule({
-        is_first: true,
-        user_id: ""
-    }, "molecule_test_id",
-    "test_abstract",
-    "test_attack", {
-        whole_time: 60,
-        buffer: 30
-    }
-);
-
-m.add(a)
-
-let b = new Beaker({
-        is_first: true,
-        user_id: ""
-    }, "beaker_test_id",
-    "test_title",
-    "test_note", {
-        whole_time: 60,
-        buffer: 30
-    }
-);
-
-b.add(m);
-
-console.log(b);
-
-b.remove("dummy");
-console.log(b);
