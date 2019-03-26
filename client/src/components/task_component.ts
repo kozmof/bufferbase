@@ -1,3 +1,5 @@
+const uuid = require("uuid/v4");
+
 type UserID = string;
 type ParentID = string;
 type ID = string;
@@ -156,7 +158,7 @@ class Core implements Meta {
     }
 
     gen_id = (): ID => {
-        return "dummy"
+        return uuid()
     }
 
     // TODO
