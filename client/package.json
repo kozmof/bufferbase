@@ -9,6 +9,7 @@
   "author": "Kozo Oeda",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^11.11.7",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
     "react": "^16.7.0",
