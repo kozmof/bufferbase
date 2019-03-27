@@ -2,5 +2,5 @@
 *.swo
 /client/dst
 /client/node_modules
-/client/src/components/*.js
-/client/src/components/tmp.ts
+/client/src/task_component/*.js
+/client/src/task_component/tmp.ts
