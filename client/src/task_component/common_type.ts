@@ -9,18 +9,18 @@ export type TimeStamp = Date;
 export type UnixTimeStamp = number;
 
 export interface Init {
-    readonly is_first: boolean;
-    readonly user_id: UserID;
-    readonly id ? : ID;
+  readonly is_first: boolean;
+  readonly user_id: UserID;
+  readonly id ? : ID;
 }
 
 export interface TimePlan {
-    readonly whole_time: Duration;
-    readonly buffer: Duration;
+  readonly whole_time: Duration;
+  readonly buffer: Duration;
 }
 
 export interface Counts {
-    numerator: number;
-    denominator: number;
+  numerator: number;
+  denominator: number;
 }
 
