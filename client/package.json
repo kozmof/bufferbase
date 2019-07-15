@@ -10,8 +10,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^4.2.0",
+    "@material-ui/styles": "^4.2.0",
     "@types/react": "^16.8.12",
     "@types/react-dom": "^16.8.3",
+    "flexsearch": "^0.6.22",
     "jest": "^24.8.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
